@@ -13,7 +13,7 @@
 
 @property (nonatomic, assign, getter = isFetching) BOOL fetching;
 @property (nonatomic, assign) NSUInteger outstandingFetches;
-//@property (nonatomic, strong) NSMutableArray *usersYouFollow;
+@property (nonatomic, strong) NSArray *userIdsYouFollow;
 @property (nonatomic, strong) NSCountedSet *bag;
 @property (nonatomic, strong) NSArray *suggestedIds;
 @property (nonatomic, strong) NSMutableArray *suggestedUsers;
@@ -70,6 +70,8 @@
     self.outstandingFetches++;
     [[ADNClient sharedClient] getFollowedUserIdsForUser:@"me" withCompletionHandler:^(NSArray *objects, ADNMetadata *meta, NSError *error) {
         self.outstandingFetches--;
+        
+        self.userIdsYouFollow = objects;
         
         for (NSString *idOfUserYouFollow in objects) {
             
@@ -187,6 +189,11 @@
     ADNUser *user = [self.suggestedUsers objectAtIndex:indexPath.row];
     NSDictionary *userInfo = [self.suggestedIds objectAtIndex:indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", user.name, [userInfo objectForKey:@"count"]];
+    if ([self.userIdsYouFollow containsObject:user.userId]) {
+        cell.textLabel.textColor = [UIColor lightGrayColor];
+    } else {
+        cell.textLabel.textColor = [UIColor darkTextColor];
+    }
     
     return cell;
 }
