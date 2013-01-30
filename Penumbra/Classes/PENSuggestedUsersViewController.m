@@ -11,6 +11,12 @@
 
 @interface PENSuggestedUsersViewController ()
 
+@property (nonatomic, assign, getter = isFetching) BOOL fetching;
+@property (nonatomic, assign) NSUInteger outstandingFetches;
+//@property (nonatomic, strong) NSMutableArray *usersYouFollow;
+@property (nonatomic, strong) NSCountedSet *bag;
+@property (nonatomic, strong) NSMutableArray *suggestedUsers;
+
 @end
 
 
@@ -21,6 +27,9 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.bag = [NSCountedSet set];
+        self.outstandingFetches = 0;
+        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     }
     return self;
 }
@@ -36,6 +45,60 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (!self.isFetching) {
+        [self fetch];
+    }
+}
+
+- (void)fetch
+{
+    self.fetching = YES;
+    
+    self.outstandingFetches++;
+    [[ADNClient sharedClient] getFollowedUserIdsForUser:@"me" withCompletionHandler:^(NSArray *objects, ADNMetadata *meta, NSError *error) {
+        self.outstandingFetches--;
+        
+        for (NSString *idOfUserYouFollow in objects) {
+            
+            self.outstandingFetches++;
+            [[ADNClient sharedClient] getFollowedUserIdsForUser:idOfUserYouFollow withCompletionHandler:^(NSArray *objects, ADNMetadata *meta, NSError *error) {
+                self.outstandingFetches--;
+                //NSLog(@"FOF %@ recieved, %i fetches reamining", idOfUserYouFollow, self.outstandingFetches);
+                
+                for (NSString *idOfUserTheyFollow in objects) {
+                    [self.bag addObject:idOfUserTheyFollow];
+                    //NSLog(@" %@ (%i)", idOfUserTheyFollow, [self.bag countForObject:idOfUserTheyFollow]);
+                }
+                
+                if (!self.outstandingFetches) {
+                    self.fetching = NO;
+                    
+                    [self processFetchedData];
+                }
+            }];
+        }
+    }];
+}
+
+- (void)processFetchedData
+{
+    NSMutableArray *dictArray = [NSMutableArray array];
+    for (NSString *userId in self.bag) {
+        NSDictionary *dict = @{@"userId":userId, @"count":@([self.bag countForObject:userId])};
+        [dictArray addObject:dict];
+    }
+    NSArray *final = [dictArray sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"count" ascending:NO ]]];
+    NSLog(@"%@",final);
+    
+    self.suggestedUsers = final;
+    [self.tableView reloadData];
+    
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -46,16 +109,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return self.suggestedUsers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -64,6 +125,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    NSDictionary *userDict = [self.suggestedUsers objectAtIndex:indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", [userDict objectForKey:@"userId"], [userDict objectForKey:@"count"]];
     
     return cell;
 }
