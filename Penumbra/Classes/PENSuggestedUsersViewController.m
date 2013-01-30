@@ -15,7 +15,9 @@
 @property (nonatomic, assign) NSUInteger outstandingFetches;
 //@property (nonatomic, strong) NSMutableArray *usersYouFollow;
 @property (nonatomic, strong) NSCountedSet *bag;
+@property (nonatomic, strong) NSArray *suggestedIds;
 @property (nonatomic, strong) NSMutableArray *suggestedUsers;
+@property (nonatomic, assign, getter = isReadyForMoreUsers) BOOL readyForMoreUsers;
 
 @end
 
@@ -26,9 +28,9 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
-        self.bag = [NSCountedSet set];
-        self.outstandingFetches = 0;
+        self.refreshControl = [[UIRefreshControl alloc] init];
+        [self.refreshControl addTarget:self action:@selector(fetch) forControlEvents:UIControlEventValueChanged];
+        
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     }
     return self;
@@ -49,15 +51,22 @@
 {
     [super viewDidAppear:animated];
     
-    if (!self.isFetching) {
-        [self fetch];
-    }
+    [self fetch];
 }
 
 - (void)fetch
 {
+    if (self.isFetching) return;
     self.fetching = YES;
+    [self.refreshControl beginRefreshing];
     
+    self.bag = [NSCountedSet set];
+    self.suggestedUsers = [NSMutableArray arrayWithCapacity:0];
+    self.readyForMoreUsers = NO;
+    [self.tableView reloadData];
+
+    self.outstandingFetches = 0;
+
     self.outstandingFetches++;
     [[ADNClient sharedClient] getFollowedUserIdsForUser:@"me" withCompletionHandler:^(NSArray *objects, ADNMetadata *meta, NSError *error) {
         self.outstandingFetches--;
@@ -76,6 +85,7 @@
                 
                 if (!self.outstandingFetches) {
                     self.fetching = NO;
+                    [self.refreshControl endRefreshing];
                     
                     [self processFetchedData];
                 }
@@ -92,11 +102,60 @@
         [dictArray addObject:dict];
     }
     NSArray *final = [dictArray sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"count" ascending:NO ]]];
-    NSLog(@"%@",final);
     
-    self.suggestedUsers = final;
+    self.suggestedIds = final;
+    self.suggestedUsers = [NSMutableArray arrayWithCapacity:self.suggestedIds.count];
+    [self fetchUserInfo];
     [self.tableView reloadData];
     
+}
+
+- (void)fetchUserInfo
+{
+    self.readyForMoreUsers = NO;
+    NSUInteger fetchCount = 20;
+    NSUInteger startingIndex = self.suggestedUsers.count;
+    
+    NSMutableArray *usersToFetch = [NSMutableArray arrayWithCapacity:fetchCount];
+    for (NSUInteger i=startingIndex; i<startingIndex+fetchCount; i++) {
+        [usersToFetch addObject:[[self.suggestedIds objectAtIndex:i] objectForKey:@"userId"]];
+    }
+    
+    for (NSString *userId in usersToFetch) {
+        NSLog(@"%@", userId);
+    }
+
+    [[ADNClient sharedClient] getUsers:usersToFetch withCompletionHandler:^(NSArray *objects, ADNMetadata *meta, NSError *error) {
+        //for (ADNUser *user in objects) {
+        //    NSLog(@"%@: %@", user.userId, user.name);
+        //}
+        
+        [self.tableView beginUpdates];
+        
+        for (NSUInteger i=startingIndex; i<startingIndex+fetchCount; i++) {
+            NSString *userId = [[self.suggestedIds objectAtIndex:i] objectForKey:@"userId"];
+            
+            NSPredicate *p = [NSPredicate predicateWithFormat:@"userId = %@", userId];
+            NSArray *matchedUsers = [objects filteredArrayUsingPredicate:p];
+            
+            if (matchedUsers.count == 1) {
+                ADNUser *user = [matchedUsers objectAtIndex:0];
+                NSLog(@"%@: %@", user.userId, user.name);
+                [self.suggestedUsers addObject:user];
+                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else {
+                NSLog(@"ERROR: found more than one user with id %@", userId);
+            }
+            
+        }
+        
+        [self.tableView endUpdates];
+        
+        if (startingIndex+fetchCount < self.suggestedIds.count) {
+            self.readyForMoreUsers = YES;
+        }
+
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -125,8 +184,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-    NSDictionary *userDict = [self.suggestedUsers objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", [userDict objectForKey:@"userId"], [userDict objectForKey:@"count"]];
+    ADNUser *user = [self.suggestedUsers objectAtIndex:indexPath.row];
+    NSDictionary *userInfo = [self.suggestedIds objectAtIndex:indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", user.name, [userInfo objectForKey:@"count"]];
     
     return cell;
 }
@@ -181,6 +241,19 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if(scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.bounds.size.height)) {
+//        NSLog(@"bottom!");
+        if (self.isReadyForMoreUsers) {
+            NSLog(@"GET MORE!!");
+            [self fetchUserInfo];
+        }
+        //NSLog(@"%@", [self getLastMessageID]);
+        //[self getMoreStuff:[self getLastMessageID]];
+    }
 }
 
 @end
