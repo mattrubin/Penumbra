@@ -72,6 +72,12 @@
         self.outstandingFetches--;
         
         self.userIdsYouFollow = objects;
+        //NSLog(@"You follow %i people", objects.count);
+        
+        if (!objects.count) {
+            self.fetching = NO;
+            [self.refreshControl endRefreshing];
+        }
         
         for (NSString *idOfUserYouFollow in objects) {
             
