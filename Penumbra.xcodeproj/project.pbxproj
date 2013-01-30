@@ -18,6 +18,23 @@
 		8C35110E16B91C1500A708F6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8C35110D16B91C1500A708F6 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8C3515FE16B91DF000A708F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C3515F616B91DEE00A708F6 /* AppDotNet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8CED1A6C167C5FC80071D908;
+			remoteInfo = AppDotNet;
+		};
+		8C35160016B91DF000A708F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C3515F616B91DEE00A708F6 /* AppDotNet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8CED1A7D167C5FC90071D908;
+			remoteInfo = AppDotNetTests;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		8C3510F416B91C1500A708F6 /* Penumbra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Penumbra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C3510F716B91C1500A708F6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -32,6 +49,7 @@
 		8C35110916B91C1500A708F6 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		8C35110B16B91C1500A708F6 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		8C35110D16B91C1500A708F6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		8C3515F616B91DEE00A708F6 /* AppDotNet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppDotNet.xcodeproj; path = AppDotNet/AppDotNet.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				8C3510FD16B91C1500A708F6 /* Penumbra */,
+				8C3515F516B91DDA00A708F6 /* External */,
 				8C3510F616B91C1500A708F6 /* Frameworks */,
 				8C3510F516B91C1500A708F6 /* Products */,
 			);
@@ -99,6 +118,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		8C3515F516B91DDA00A708F6 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				8C3515F616B91DEE00A708F6 /* AppDotNet.xcodeproj */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
+		8C3515F716B91DEE00A708F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C3515FF16B91DF000A708F6 /* libAppDotNet.a */,
+				8C35160116B91DF000A708F6 /* AppDotNetTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -139,12 +175,35 @@
 			mainGroup = 8C3510EB16B91C1500A708F6;
 			productRefGroup = 8C3510F516B91C1500A708F6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 8C3515F716B91DEE00A708F6 /* Products */;
+					ProjectRef = 8C3515F616B91DEE00A708F6 /* AppDotNet.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8C3510F316B91C1500A708F6 /* Penumbra */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		8C3515FF16B91DF000A708F6 /* libAppDotNet.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAppDotNet.a;
+			remoteRef = 8C3515FE16B91DF000A708F6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8C35160116B91DF000A708F6 /* AppDotNetTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = AppDotNetTests.octest;
+			remoteRef = 8C35160016B91DF000A708F6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8C3510F216B91C1500A708F6 /* Resources */ = {
@@ -283,6 +342,7 @@
 				8C35111316B91C1500A708F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
