@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PENAuthenticationViewController.h"
+#import "PENSuggestedUsersViewController.h"
 
-@interface PENAppDelegate : UIResponder <UIApplicationDelegate>
+
+@interface PENAppDelegate : UIResponder <UIApplicationDelegate, PENAuthenticationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) PENAuthenticationViewController *authController;
+@property (strong, nonatomic) PENSuggestedUsersViewController *usersController;
 
 @end

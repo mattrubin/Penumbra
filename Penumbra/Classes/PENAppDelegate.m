@@ -8,15 +8,34 @@
 
 #import "PENAppDelegate.h"
 
+
 @implementation PENAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
+    
+    self.authController = [[PENAuthenticationViewController alloc] init];
+    self.authController.delegate = self;
+    self.window.rootViewController = self.authController;
+
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)authenticationComplete
+{
+    self.usersController = [[PENSuggestedUsersViewController alloc] init];
+    
+    [UIView transitionFromView:self.window.rootViewController.view
+                        toView:self.usersController.view
+                      duration:0.65f
+                       options:UIViewAnimationOptionTransitionFlipFromRight
+                    completion:^(BOOL finished)
+     {
+         self.window.rootViewController = self.usersController;
+     }];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

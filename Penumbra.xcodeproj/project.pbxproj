@@ -20,6 +20,9 @@
 		8C35160416B91E9800A708F6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C35160316B91E9800A708F6 /* SystemConfiguration.framework */; };
 		8C35160616B91EB600A708F6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C35160516B91EB600A708F6 /* MobileCoreServices.framework */; };
 		8C35160816B91F0E00A708F6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C35160716B91F0E00A708F6 /* CoreLocation.framework */; };
+		8C35160F16B9232D00A708F6 /* PENAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C35160E16B9232D00A708F6 /* PENAuthenticationViewController.m */; };
+		8C35161416B924EE00A708F6 /* ADN.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C35161316B924EE00A708F6 /* ADN.plist */; };
+		8C35161A16B925D200A708F6 /* PENSuggestedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C35161916B925D200A708F6 /* PENSuggestedUsersViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,11 @@
 		8C35160316B91E9800A708F6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		8C35160516B91EB600A708F6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8C35160716B91F0E00A708F6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		8C35160D16B9232D00A708F6 /* PENAuthenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENAuthenticationViewController.h; sourceTree = "<group>"; };
+		8C35160E16B9232D00A708F6 /* PENAuthenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PENAuthenticationViewController.m; sourceTree = "<group>"; };
+		8C35161316B924EE00A708F6 /* ADN.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ADN.plist; sourceTree = "<group>"; };
+		8C35161816B925D200A708F6 /* PENSuggestedUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENSuggestedUsersViewController.h; sourceTree = "<group>"; };
+		8C35161916B925D200A708F6 /* PENSuggestedUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PENSuggestedUsersViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +135,7 @@
 				8C35110916B91C1500A708F6 /* Default.png */,
 				8C35110B16B91C1500A708F6 /* Default@2x.png */,
 				8C35110D16B91C1500A708F6 /* Default-568h@2x.png */,
+				8C35161316B924EE00A708F6 /* ADN.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -153,6 +162,10 @@
 			children = (
 				8C35110616B91C1500A708F6 /* PENAppDelegate.h */,
 				8C35110716B91C1500A708F6 /* PENAppDelegate.m */,
+				8C35160D16B9232D00A708F6 /* PENAuthenticationViewController.h */,
+				8C35160E16B9232D00A708F6 /* PENAuthenticationViewController.m */,
+				8C35161816B925D200A708F6 /* PENSuggestedUsersViewController.h */,
+				8C35161916B925D200A708F6 /* PENSuggestedUsersViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -236,6 +249,7 @@
 				8C35110A16B91C1500A708F6 /* Default.png in Resources */,
 				8C35110C16B91C1500A708F6 /* Default@2x.png in Resources */,
 				8C35110E16B91C1500A708F6 /* Default-568h@2x.png in Resources */,
+				8C35161416B924EE00A708F6 /* ADN.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +262,8 @@
 			files = (
 				8C35110416B91C1500A708F6 /* main.m in Sources */,
 				8C35110816B91C1500A708F6 /* PENAppDelegate.m in Sources */,
+				8C35160F16B9232D00A708F6 /* PENAuthenticationViewController.m in Sources */,
+				8C35161A16B925D200A708F6 /* PENSuggestedUsersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
