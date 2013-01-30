@@ -111,8 +111,7 @@
 		8C3510FD16B91C1500A708F6 /* Penumbra */ = {
 			isa = PBXGroup;
 			children = (
-				8C35110616B91C1500A708F6 /* PENAppDelegate.h */,
-				8C35110716B91C1500A708F6 /* PENAppDelegate.m */,
+				8C35160C16B9227C00A708F6 /* Classes */,
 				8C3510FE16B91C1500A708F6 /* Supporting Files */,
 			);
 			path = Penumbra;
@@ -147,6 +146,15 @@
 				8C35160116B91DF000A708F6 /* AppDotNetTests.octest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8C35160C16B9227C00A708F6 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				8C35110616B91C1500A708F6 /* PENAppDelegate.h */,
+				8C35110716B91C1500A708F6 /* PENAppDelegate.m */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
