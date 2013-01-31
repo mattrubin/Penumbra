@@ -23,6 +23,7 @@
 		8C35160F16B9232D00A708F6 /* PENAuthenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C35160E16B9232D00A708F6 /* PENAuthenticationViewController.m */; };
 		8C35161416B924EE00A708F6 /* ADN.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C35161316B924EE00A708F6 /* ADN.plist */; };
 		8C35161A16B925D200A708F6 /* PENSuggestedUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C35161916B925D200A708F6 /* PENSuggestedUsersViewController.m */; };
+		8C35161D16B9E31700A708F6 /* PENSuggestedUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C35161C16B9E31700A708F6 /* PENSuggestedUserCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		8C35161316B924EE00A708F6 /* ADN.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ADN.plist; sourceTree = "<group>"; };
 		8C35161816B925D200A708F6 /* PENSuggestedUsersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENSuggestedUsersViewController.h; sourceTree = "<group>"; };
 		8C35161916B925D200A708F6 /* PENSuggestedUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PENSuggestedUsersViewController.m; sourceTree = "<group>"; };
+		8C35161B16B9E31700A708F6 /* PENSuggestedUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PENSuggestedUserCell.h; sourceTree = "<group>"; };
+		8C35161C16B9E31700A708F6 /* PENSuggestedUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PENSuggestedUserCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +169,8 @@
 				8C35160E16B9232D00A708F6 /* PENAuthenticationViewController.m */,
 				8C35161816B925D200A708F6 /* PENSuggestedUsersViewController.h */,
 				8C35161916B925D200A708F6 /* PENSuggestedUsersViewController.m */,
+				8C35161B16B9E31700A708F6 /* PENSuggestedUserCell.h */,
+				8C35161C16B9E31700A708F6 /* PENSuggestedUserCell.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 				8C35110816B91C1500A708F6 /* PENAppDelegate.m in Sources */,
 				8C35160F16B9232D00A708F6 /* PENAuthenticationViewController.m in Sources */,
 				8C35161A16B925D200A708F6 /* PENSuggestedUsersViewController.m in Sources */,
+				8C35161D16B9E31700A708F6 /* PENSuggestedUserCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

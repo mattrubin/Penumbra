@@ -7,6 +7,7 @@
 //
 
 #import "PENSuggestedUsersViewController.h"
+#import "PENSuggestedUserCell.h"
 
 
 @interface PENSuggestedUsersViewController ()
@@ -31,7 +32,7 @@
         self.refreshControl = [[UIRefreshControl alloc] init];
         [self.refreshControl addTarget:self action:@selector(fetch) forControlEvents:UIControlEventValueChanged];
         
-        [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+        [self.tableView registerClass:[PENSuggestedUserCell class] forCellReuseIdentifier:@"SuggestedUserCell"];
     }
     return self;
 }
@@ -188,17 +189,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"SuggestedUserCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
     ADNUser *user = [self.suggestedUsers objectAtIndex:indexPath.row];
     NSDictionary *userInfo = [self.suggestedIds objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", user.name, [userInfo objectForKey:@"count"]];
-    if ([self.userIdsYouFollow containsObject:user.userId]) {
-        cell.textLabel.textColor = [UIColor lightGrayColor];
-    } else {
-        cell.textLabel.textColor = [UIColor darkTextColor];
+    
+    if ([cell isKindOfClass:[PENSuggestedUserCell class]]) {
+        PENSuggestedUserCell *userCell = (PENSuggestedUserCell *)cell;
+        
+        userCell.user = user;
+        userCell.count = [userInfo objectForKey:@"count"];
+        userCell.youFollow = [self.userIdsYouFollow containsObject:user.userId];
     }
     
     return cell;
