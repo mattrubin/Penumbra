@@ -202,6 +202,7 @@
         userCell.user = user;
         userCell.count = [userInfo objectForKey:@"count"];
         userCell.youFollow = [self.userIdsYouFollow containsObject:user.userId];
+        [userCell update];
     }
     
     return cell;

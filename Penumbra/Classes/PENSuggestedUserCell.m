@@ -7,6 +7,7 @@
 //
 
 #import "PENSuggestedUserCell.h"
+#import <AppDotNet/UIImageView+AFNetworking.h>
 
 
 @implementation PENSuggestedUserCell
@@ -31,37 +32,14 @@
 - (void)update
 {
     self.textLabel.text = [NSString stringWithFormat:@"%@ (%@)", self.user.name, self.count];
+    [self.imageView setImageWithURL:self.user.avatarImage.url placeholderImage:[UIImage imageNamed:@"WhitePixel.png"]];
+    
     if (self.youFollow) {
         self.textLabel.textColor = [UIColor lightGrayColor];
+        self.imageView.alpha = 0.3;
     } else {
         self.textLabel.textColor = [UIColor darkTextColor];
-    }
-}
-
-
-#pragma mark - Accessors
-
-- (void)setUser:(ADNUser *)user
-{
-    if (_user != user) {
-        _user = user;
-        [self update];
-    }
-}
-
-- (void)setCount:(NSNumber *)count
-{
-    if (_count != count) {
-        _count = [count copy];
-        [self update];
-    }
-}
-
-- (void)setYouFollow:(BOOL)youFollow
-{
-    if (_youFollow != youFollow) {
-        _youFollow = youFollow;
-        [self update];
+        self.imageView.alpha = 1;
     }
 }
 

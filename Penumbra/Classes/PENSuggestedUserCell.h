@@ -11,6 +11,8 @@
 
 @interface PENSuggestedUserCell : UITableViewCell
 
+- (void)update;
+
 @property (nonatomic, strong) ADNUser *user;
 @property (nonatomic, copy)   NSNumber *count;
 @property (nonatomic, assign) BOOL youFollow;
