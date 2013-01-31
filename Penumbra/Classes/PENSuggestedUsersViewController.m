@@ -15,9 +15,10 @@
 @property (nonatomic, assign, getter = isFetching) BOOL fetching;
 @property (nonatomic, assign) NSUInteger outstandingFetches;
 @property (nonatomic, strong) NSArray *userIdsYouFollow;
-@property (nonatomic, strong) NSCountedSet *bag;
-@property (nonatomic, strong) NSArray *suggestedIds;
-@property (nonatomic, strong) NSMutableArray *suggestedUsers;
+@property (nonatomic, strong) NSCountedSet *bag; // used to count the freinds-of-friends
+@property (nonatomic, strong) NSArray *suggestedIds; // sorted list of @{id, count} pairs
+@property (nonatomic, strong) NSMutableArray *suggestedUsers; // sorted list of users
+@property (nonatomic, strong) NSMutableDictionary *followerIds; // {id: [followers...], ...}
 @property (nonatomic, assign, getter = isReadyForMoreUsers) BOOL readyForMoreUsers;
 
 @end
@@ -63,6 +64,7 @@
     
     self.bag = [NSCountedSet set];
     self.suggestedUsers = [NSMutableArray arrayWithCapacity:0];
+    self.followerIds = [NSMutableDictionary dictionaryWithCapacity:100];
     self.readyForMoreUsers = NO;
     [self.tableView reloadData];
 
@@ -89,6 +91,11 @@
                 
                 for (NSString *idOfUserTheyFollow in objects) {
                     [self.bag addObject:idOfUserTheyFollow];
+                    
+                    if (![self.followerIds objectForKey:idOfUserTheyFollow]) {
+                        [self.followerIds setObject:[NSMutableArray arrayWithCapacity:1] forKey:idOfUserTheyFollow];
+                    }
+                    [[self.followerIds objectForKey:idOfUserTheyFollow] addObject:idOfUserYouFollow];
                     //NSLog(@" %@ (%i)", idOfUserTheyFollow, [self.bag countForObject:idOfUserTheyFollow]);
                 }
                 
@@ -202,6 +209,7 @@
         userCell.user = user;
         userCell.count = [userInfo objectForKey:@"count"];
         userCell.youFollow = [self.userIdsYouFollow containsObject:user.userId];
+        userCell.followerIds = [self.followerIds objectForKey:user.userId];
         [userCell update];
     }
     

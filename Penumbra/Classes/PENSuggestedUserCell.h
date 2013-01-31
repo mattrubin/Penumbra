@@ -16,5 +16,6 @@
 @property (nonatomic, strong) ADNUser *user;
 @property (nonatomic, copy)   NSNumber *count;
 @property (nonatomic, assign) BOOL youFollow;
+@property (nonatomic, strong) NSArray *followerIds;
 
 @end

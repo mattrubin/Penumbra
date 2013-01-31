@@ -14,6 +14,7 @@
 @interface PENSuggestedUserCell ()
 
 @property (nonatomic, strong) UIImageView *avatar;
+@property (nonatomic, strong) NSMutableArray *miniAvatars;
 
 @end
 
@@ -29,6 +30,16 @@
         self.avatar.layer.cornerRadius = 5.0;
         self.avatar.clipsToBounds = YES;
         [self.contentView addSubview:self.avatar];
+        
+        self.miniAvatars = [NSMutableArray arrayWithCapacity:18];
+        for (NSUInteger i=0; i<18; i++) {
+            UIImageView *miniAvatar = [[UIImageView alloc] initWithFrame:CGRectMake(65, 30, 25, 25)];
+            miniAvatar.layer.cornerRadius = 5.0;
+            miniAvatar.clipsToBounds = YES;
+            [self.contentView addSubview:miniAvatar];
+            [self.miniAvatars addObject:miniAvatar];
+        }
+
     }
     return self;
 }
@@ -55,6 +66,18 @@
         self.contentView.alpha = 1;
         self.imageView.alpha = 1;
     }
+    
+    NSUInteger i = 0;
+    for (UIImageView *miniAvatar in self.miniAvatars) {
+        if (i < self.followerIds.count) {
+            NSString *followerId = [self.followerIds objectAtIndex:i];
+            NSString *urlString = [NSString stringWithFormat:@"https://alpha-api.app.net/stream/0/users/%@/avatar", followerId];
+            [miniAvatar setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:[UIImage imageNamed:@"WhiteAvatar.png"]];
+        } else {
+            [miniAvatar setImage:[UIImage imageNamed:@"WhiteAvatar.png"]];
+        }
+        i++;
+    }
 }
 
 - (void)layoutSubviews
@@ -75,6 +98,15 @@
     detailTextLabelFrame.origin.y = margin;
     detailTextLabelFrame.size.height = textLabelFrame.size.height;
     self.detailTextLabel.frame = detailTextLabelFrame;
+    
+    CGFloat miniAvatarY = self.textLabel.frame.origin.y + self.textLabel.frame.size.height + margin;
+    CGFloat miniAvatarX = self.avatar.frame.origin.x + self.avatar.frame.size.width + margin*2;
+    CGFloat miniAvatarSize = self.contentView.bounds.size.height - miniAvatarY - margin*2;
+    for (UIView *miniAvatarView in self.miniAvatars) {
+        miniAvatarView.frame = CGRectMake(miniAvatarX, miniAvatarY, miniAvatarSize, miniAvatarSize);
+        miniAvatarX += miniAvatarSize + margin;
+    }
+
 }
 
 @end
